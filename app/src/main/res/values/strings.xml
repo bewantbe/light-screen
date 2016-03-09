@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">light-screen2</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="seekbar_bright">white level</string>
+    <string name="seekbar_colortemp">Color Temperature</string>
+    <string name="tv_rgb">RGB: </string>
+</resources>
