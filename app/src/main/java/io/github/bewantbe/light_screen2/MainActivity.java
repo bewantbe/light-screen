@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         tv3 = (TextView)findViewById(R.id.textView3);
 
         int tv_c_bright = (int)(((Y+0.4)%1.0) * 255.99);
-        int bg_rgb = Color.rgb(tv_c_bright, tv_c_bright, tv_c_bright);
-        tv1.setTextColor(bg_rgb);
-        tv2.setTextColor(bg_rgb);
-        tv3.setTextColor(bg_rgb);
+        int tv_rgb = Color.rgb(tv_c_bright, tv_c_bright, tv_c_bright);
+        tv1.setTextColor(tv_rgb);
+        tv2.setTextColor(tv_rgb);
+        tv3.setTextColor(tv_rgb);
 
         tv1.setText(String.format("%s: Y = %.3f%%", getString(R.string.seekbar_bright), 100.0 * Y));
         tv2.setText(String.format("%s: T = %.0fK (%.0fM)", getString(R.string.seekbar_colortemp), T, 1e6 / T));
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             RGB[2] = 0;
             return;
         }
+        // in CIE xy
         if (T < 4000) {
             x = -0.2661239*1e9/T/T/T - 0.2343580*1e6/T/T + 0.8776956*1e3/T + 0.179910;
         } else {
