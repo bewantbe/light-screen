@@ -1,12 +1,9 @@
 package io.github.bewantbe.light_screen2;
 
 import android.graphics.Color;
+import android.hardware.Camera;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -17,6 +14,9 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     RelativeLayout rl;
     private SeekBar seekBar1, seekBar2;
+    private Camera camera = null;
+    private boolean cameraFlashLightOn = false;
+    private Camera.Parameters parameters = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if (cameraFlashLightOn) {
+                closeFlash();
+            } else {
+                openFlash();
+            }
             return true;
         }
 
@@ -70,6 +75,34 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     protected void onPause() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        closeFlash();
+        super.onStop();
+    }
+
+    private void openFlash() {
+        if (cameraFlashLightOn) {
+            return ;
+        }
+        camera = Camera.open();
+        parameters = camera.getParameters();
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        camera.setParameters(parameters);
+        cameraFlashLightOn = true;
+    }
+
+    private void closeFlash() {
+        if (!cameraFlashLightOn) {
+            return ;
+        }
+        parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        camera.setParameters(parameters);
+        camera.release();
+        camera = null;
+        cameraFlashLightOn = false;
     }
 
     @Override
